@@ -1,15 +1,16 @@
 const router = require('express').Router();
-const User = require('../schemas/user');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const { usernameValidationRules, passwordValidationRules, validate } = require('../utils/validator');
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', [usernameValidationRules(), passwordValidationRules()], validate, async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
-    if (user) return res.status(409).json({ message: `${username} already exist.` });
+    if (user) return res.status(400).json({ message: `${username} already exist.` });
 
     const hash = await bcrypt.hash(password, 1);
     await User.create({ username, password: hash });
@@ -20,7 +21,7 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.post('/signin',, async (req, res) => {
+router.post('/signin', [usernameValidationRules(), passwordValidationRules()], validate, async (req, res) => {
   const { username, password } = req.body;
 
   try {
