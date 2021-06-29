@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+# docker run -d -p 27017:27017 --name mongodb -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password mongo
+# docker exec -it <container_id> /bin/bash mongo -u admin
+# use test
+# db.createUser({user: 'test', pwd: 'test',roles: [{ role: 'readWrite', db:'test'}]})
+# ctrl + x, ctrl + d

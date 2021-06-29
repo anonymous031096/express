@@ -1,4 +1,4 @@
 module.exports = {
   PORT: 3000,
-  MONGO_CON_STR: 'mongodb://ppp:ppp@172.105.113.68:27017/ppp',
+  MONGO_CON_STR: 'mongodb://test:test@20.58.187.232:27017/test',
 };
