@@ -9,7 +9,7 @@ const hasRoles = (...permittedRoles) => {
       const user = jwt.verify(authorization, fs.readFileSync('./public.key', 'utf8'));
       req.user = user;
       if (!user.roles || !user.roles.length) return next();
-      if (!permittedRoles) return next();
+      if (!permittedRoles || !permittedRoles.length) return next();
 
       if (user.roles.some((r) => permittedRoles.includes(r))) return next();
       return res.status(403).json('Forbiden');

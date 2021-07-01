@@ -11,11 +11,11 @@ const validate = (req, res, next) => {
 };
 
 const usernameValidationRules = () => {
-  return body('username').matches('^(?=[a-zA-Z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$');
+  return body('username', 'Từ 2 đến 20 ký tự a-zA-Z0-9._').matches('^(?=[a-zA-Z0-9._]{2,20}$)(?!.*[_.]{2})[^_.].*[^_.]$');
 };
 
 const passwordValidationRules = () => {
-  return body('password').isLength({ min: 4, max: 20 });
+  return body('password', 'Từ 4 đến 20 ký tự').isLength({ min: 4, max: 20 });
 };
 
 module.exports = { validate, usernameValidationRules, passwordValidationRules };
