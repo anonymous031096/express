@@ -3,10 +3,10 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const { usernameValidationRules, passwordValidationRules, validate } = require('../utils/validator');
-const { USER } = require('../utils/roles');
+const { validate, validationBody } = require('../utils/validator');
+const { ROLES } = require('../utils/data-fixed');
 
-router.post('/init', [passwordValidationRules()], validate, async (req, res) => {
+router.post('/init', validationBody('password'), validate, async (req, res) => {
   const { password } = req.body;
   const username = 'root';
   try {
@@ -22,7 +22,7 @@ router.post('/init', [passwordValidationRules()], validate, async (req, res) => 
   }
 });
 
-router.post('/signup', [usernameValidationRules(), passwordValidationRules()], validate, async (req, res) => {
+router.post('/signup', validationBody('username', 'password'), validate, async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -30,7 +30,7 @@ router.post('/signup', [usernameValidationRules(), passwordValidationRules()], v
     if (user) return res.status(400).json({ message: `${username} already exist.` });
 
     const hash = await bcrypt.hash(password, 1);
-    await User.create({ username, password: hash, roles: [USER] });
+    await User.create({ username, password: hash, roles: [ROLES.USER] });
 
     return res.json();
   } catch (err) {
@@ -38,7 +38,7 @@ router.post('/signup', [usernameValidationRules(), passwordValidationRules()], v
   }
 });
 
-router.post('/signin', [usernameValidationRules(), passwordValidationRules()], validate, async (req, res) => {
+router.post('/signin', validationBody('username', 'password'), validate, async (req, res) => {
   const { username, password } = req.body;
 
   try {
